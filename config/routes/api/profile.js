@@ -150,7 +150,7 @@ router.delete('/', auth, async (req,res)=>{
 router.put('/experience', auth,
   check('title','title is required').notEmpty(),
   check('company','company is required').notEmpty(),
-  check('from',' Date  is required').notEmpty(),
+  // check('from',' Date  is required').notEmpty(),
 
   async (req,res)=>{
   const error = validationResult(req)
@@ -194,6 +194,22 @@ router.put('/experience', auth,
     res.status(500).send("servor error")
   }
   
+})
+
+router.delete('experience/:exp_id',auth, async(req,res)=>{
+  try {
+   const profile = await Profile.findOne({ user:req.user.id })
+    const removeIndex = profile.experience.map(item=>item.id).indexOf(req.params.exp_id);
+
+    profile.experience.splice(removeIndex, 1)
+   await profile.save()
+
+   res.json(profile)
+
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send("servor error")
+  }
 })
 
 module.exports = router;

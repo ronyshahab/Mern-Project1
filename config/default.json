@@ -1,0 +1,5 @@
+{
+    "mongoUrl":"mongodb+srv://ronak:1234@cluster0.hpjrdsj.mongodb.net/?retryWrites=true&w=majority",
+    "jwtSecret":"jwtScretKey"
+    
+}

@@ -91,7 +91,7 @@ router.post(
 
       await profile.save();
 
-      res.json(profile);
+      return  res.json(profile);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("servor error");
@@ -99,7 +99,7 @@ router.post(
 
     console.log(profileFeilds.skills);
 
-    res.send("hi");
+   
   }
 );
 
@@ -196,7 +196,7 @@ router.put('/experience', auth,
   
 })
 
-router.delete('experience/:exp_id',auth, async(req,res)=>{
+router.delete('/experience/:exp_id',auth, async(req,res)=>{
   try {
    const profile = await Profile.findOne({ user:req.user.id })
     const removeIndex = profile.experience.map(item=>item.id).indexOf(req.params.exp_id);

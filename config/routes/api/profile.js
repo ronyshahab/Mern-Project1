@@ -1,4 +1,6 @@
+
 const express = require("express");
+const axios = require('axios');
 const router = express.Router();
 const auth = require("../../../middleware/auth.js");
 const Profile = require("../../../models/Profile.js");
@@ -224,24 +226,40 @@ router.put(
   }
 );
 
-router.delete("/experience/:exp_id", auth, async (req, res) => {
+// router.delete('experience/:exp_id', auth, async (req, res) => {
+//   try {
+//     const profile = await Profile.findOne({ user: req.user.id });
+//     const removeIndex = profile.education
+//       .map((item) => item.id)
+//       .indexOf(req.params.exp_id);
+
+//     profile.education.splice(removeIndex, 1);
+//     await profile.save();
+
+//     res.json(profile);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("servor error");
+//   }
+// });
+
+router.delete('/experience/:exp_id', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
-    const removeIndex = profile.education
-      .map((item) => item.id)
-      .indexOf(req.params.exp_id);
+    const foundProfile = await Profile.findOne({ user: req.user.id });
 
-    profile.education.splice(removeIndex, 1);
-    await profile.save();
+    foundProfile.experience = foundProfile.experience.filter(
+      (exp) => exp._id.toString() !== req.params.exp_id
+    );
 
-    res.json(profile);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("servor error");
+    await foundProfile.save();
+    return res.status(200).json(foundProfile);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ msg: 'Server error' });
   }
 });
 
-router.delete("/education/:edu_id", auth, async (req, res) => {
+router.delete('/education/:edu_id', auth, async (req, res) => {
   try {
     const foundProfile = await Profile.findOne({ user: req.user.id });
     foundProfile.education = foundProfile.education.filter(
@@ -251,7 +269,7 @@ router.delete("/education/:edu_id", auth, async (req, res) => {
     return res.status(200).json(foundProfile);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ msg: "Server error" });
+    return res.status(500).json({ msg: 'Server error' });
   }
 });
 

@@ -1,6 +1,6 @@
 import React from "react";
-
-function Landing() {
+import { Link } from "react-router-dom";
+const Landing = () => {
   return (
     <section className="landing">
       <div className="dark-overlay">
@@ -11,17 +11,17 @@ function Landing() {
             other developers
           </p>
           <div className="buttons">
-            <a href="register.html" className="btn btn-primary">
+            <Link to="/register" className="btn btn-primary">
               Sign Up
-            </a>
-            <a href="login.html" className="btn btn">
+            </Link>
+            <Link to="/login" className="btn btn">
               Login
-            </a>
+            </Link>
           </div>
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default Landing;
